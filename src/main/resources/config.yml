@@ -1,0 +1,21 @@
+# This is the default config for RoleplayTP by WaRToG
+# If you want to put color, simply use minecraft's color code
+
+item:
+  type: "PAPER"
+  name: "&6Fast Travel"
+  description: "&8Used to teleport;&8at a given location"
+
+messages:
+  player-not-online: "&cthis player is not online"
+  # You can use {item} and {playerName}
+  item-given: "&aYou gave a {item}&a to {playerName}"
+  # You can use {item}
+  item-received: "&aYou received a {item}"
+  no-item-in-hand: "&cYou have no item in your main hand"
+  warp-already-exists: "&cThis warp already exists"
+  # You can use {warpName}
+  warp-set: "&aWarp &6{warpName}&a added"
+  warp-does-not-exists: "&cThis warp does not exists"
+  # You can use {warpName}
+  warp-delete: "&aWarp &6{warpName}&a removed"
