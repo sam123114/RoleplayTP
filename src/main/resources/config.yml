@@ -3,8 +3,18 @@
 
 item:
   type: "PAPER"
+  # A custom model data of -1 means the plugin will ignore it
+  custom-model-data: -1
   name: "&6Fast Travel"
   description: "&8Used to teleport;&8at a given location"
+
+inventory:
+  title: "&6Warps"
+  warp-name-color: "&6"
+  # between 1 and 6
+  # The number of rows also determine the maximum amount of warp
+  # Ex: 1 rows = 9 warps
+  number-of-rows: 1
 
 messages:
   player-not-online: "&cthis player is not online"
@@ -19,3 +29,7 @@ messages:
   warp-does-not-exists: "&cThis warp does not exists"
   # You can use {warpName}
   warp-delete: "&aWarp &6{warpName}&a removed"
+  permission: "&cYou don't have permissions to execute this command"
+  maximum-amount-warp: "&cYou have already reach the maximum amount of warp"
+  # You can use {warpName}
+  teleport-to-warp: "&aYou have been teleported to the warp &6{warpName}"

@@ -4,11 +4,16 @@ import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import ca.wartog.roleplaytp.Main;
+import ca.wartog.roleplaytp.utils.ItemBuilder;
 
 public class WarpManager {
 	
@@ -58,7 +63,30 @@ public class WarpManager {
 	}
 	
 	public boolean isWarpSet(String name) {
-		return fileConfig.isSet(name);
+		return fileConfig.isSet("warps." + name);
+	}
+	
+	public boolean isWarpListEmpty() {
+		if(fileConfig.getConfigurationSection("warps") == null)
+			return true;
+		return false;
+	}
+	
+	public int numberOfWarps() {
+		if(isWarpListEmpty())
+			return 0;
+		return fileConfig.getConfigurationSection("warps").getKeys(false).size();
+	}
+	
+	public ConfigurationSection getWarpInformation(String name) {
+		return fileConfig.getConfigurationSection("warps." + name);
+	}
+	
+	public void addWarpToInventory(Inventory inv) {
+		if(isWarpListEmpty()) return;
+		for(String name : fileConfig.getConfigurationSection("warps").getKeys(false)) {
+			inv.addItem(new ItemBuilder(Material.getMaterial(fileConfig.getString("warps." + name + ".item"))).setName(Main.getInstance().getConfig().getString("inventory.warp-name-color").replace("&", "§") + name).addItemFlags(ItemFlag.HIDE_POTION_EFFECTS).toItemStack());
+		}
 	}
 
 }

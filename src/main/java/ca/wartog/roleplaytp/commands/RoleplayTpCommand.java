@@ -23,6 +23,10 @@ public class RoleplayTpCommand implements CommandExecutor{
 		if(args.length > 0) {
 			// COMMAND GIVE
 			if(args[0].equalsIgnoreCase("give")) {
+				if(!p.hasPermission("roleplaytp.give")) {
+					p.sendMessage(main.getConfig().getString("messages.permission").replace("&", "§"));
+					return false;
+				}
 				ItemStack item = main.getItem();
 				if(args.length == 1) {
 					giveItemToPlayer(p, item);
@@ -45,6 +49,10 @@ public class RoleplayTpCommand implements CommandExecutor{
 			}
 			//COMMAND RELOAD
 			else if(args[0].equalsIgnoreCase("reload")) {
+				if(!p.hasPermission("roleplaytp.reload")) {
+					p.sendMessage(main.getConfig().getString("messages.permission").replace("&", "§"));
+					return false;
+				}
 				if(args.length == 1) {
 					main.reloadConfig();
 					p.sendMessage("§aConfig reloaded");
@@ -55,6 +63,10 @@ public class RoleplayTpCommand implements CommandExecutor{
 			} 
 			//COMMAND SETWARP
 			else if(args[0].equalsIgnoreCase("setwarp")){
+				if(!p.hasPermission("roleplaytp.setwarp")) {
+					p.sendMessage(main.getConfig().getString("messages.permission").replace("&", "§"));
+					return false;
+				}
 				if(args.length == 2) {
 					ItemStack itemInHand = p.getInventory().getItemInMainHand();
 					if(itemInHand == null || itemInHand.getType().equals(Material.AIR)) {
@@ -62,6 +74,10 @@ public class RoleplayTpCommand implements CommandExecutor{
 						return false;
 					}
 					WarpManager wm = new WarpManager();
+					if(wm.numberOfWarps() >= (main.getConfig().getInt("inventory.number-of-rows") * 9)) {
+						p.sendMessage(main.getConfig().getString("messages.maximum-amount-warp").replace("&", "§"));
+						return false;
+					}
 					if(wm.isWarpSet(args[1])) {
 						p.sendMessage(main.getConfig().getString("messages.warp-already-exists").replace("&", "§"));
 						return false;
@@ -76,6 +92,10 @@ public class RoleplayTpCommand implements CommandExecutor{
 			}
 			//COMMAND DELWARP
 			else if(args[0].equalsIgnoreCase("delwarp")) {
+				if(!p.hasPermission("roleplaytp.delwarp")) {
+					p.sendMessage(main.getConfig().getString("messages.permission").replace("&", "§"));
+					return false;
+				}
 				if(args.length == 2) {
 					WarpManager wm = new WarpManager();
 					if(!wm.isWarpSet(args[1])) {
