@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -59,11 +60,10 @@ public class ItemBuilder {
         return this;
     }
 
-    @SuppressWarnings("deprecation")
-	public ItemBuilder setSkullOwner(String owner) {
+    public ItemBuilder setSkullOwner(Player owner) {
         try {
             SkullMeta im = (SkullMeta) is.getItemMeta();
-            im.setOwner(owner);
+            im.setOwningPlayer(owner);
             is.setItemMeta(im);
         } catch (ClassCastException expected) {
         }

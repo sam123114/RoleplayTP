@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import ca.wartog.roleplaytp.commands.RoleplayTpCommand;
 import ca.wartog.roleplaytp.commands.WarpCommand;
+import ca.wartog.roleplaytp.listener.Events;
 import ca.wartog.roleplaytp.listener.InventoryClickEvents;
 import ca.wartog.roleplaytp.utils.ItemBuilder;
 
@@ -30,6 +31,7 @@ public class Main extends JavaPlugin{
 		saveDefaultConfig();
 		
 		Bukkit.getPluginManager().registerEvents(new InventoryClickEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new Events(), this);
 		
 		getCommand("roleplaytp").setExecutor(new RoleplayTpCommand());
 		getCommand("execwarpmenu").setExecutor(new WarpCommand());
@@ -39,9 +41,9 @@ public class Main extends JavaPlugin{
 		return instance;
 	}
 	
-	public ItemStack getItem() {
-		ItemBuilder ib = new ItemBuilder(Material.getMaterial(getConfig().getString("item.type"))).setName(getConfig().getString("item.name").replace("&", "§")).setLore(getConfig().getString("item.description").replace("&", "§").split(";")).addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-		int customModelData = getConfig().getInt("item.custom-model-data");
+	public ItemStack getItem(String itemId) {
+		ItemBuilder ib = new ItemBuilder(Material.getMaterial(getConfig().getString("items." + itemId + ".type"))).setName(getConfig().getString("items." + itemId + ".name").replace("&", "§")).setLore(getConfig().getString("items." + itemId + ".description").replace("&", "§").split(";")).addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+		int customModelData = getConfig().getInt("items." + itemId + ".custom-model-data");
 		if(customModelData != -1) {
 			return ib.setCustomModelData(customModelData).toItemStack();
 		}

@@ -1,12 +1,26 @@
 # This is the default config for RoleplayTP by WaRToG
 # If you want to put color, simply use minecraft's color code
 
-item:
-  type: "PAPER"
-  # A custom model data of -1 means the plugin will ignore it
-  custom-model-data: -1
-  name: "&6Fast Travel"
-  description: "&8Used to teleport;&8at a given location"
+# This is the time in sec that will be used for teleportation
+# You can change that in the warp.yml file
+teleport-timer-default-value: 3
+
+items:
+  # This value will be use in the /rptp give command
+  # DO NOT USE SPACES
+  "item1":
+    type: "PAPER"
+    # A custom model data of -1 means the plugin will ignore it
+    custom-model-data: -1
+    name: "&6MOON"
+    description: "&8Used to teleport;&8at the given location"
+    warp: "test1"
+  "item2":
+    type: "STONE"
+    custom-model-data: -1
+    name: "&6INTO THE UNKNOWN"
+    description: "&8Used to teleport;&8at the given location"
+    warp: "test2"
 
 inventory:
   title: "&6Warps"
@@ -22,7 +36,7 @@ messages:
   item-given: "&aYou gave a {item}&a to {playerName}"
   # You can use {item}
   item-received: "&aYou received a {item}"
-  no-item-in-hand: "&cYou have no item in your main hand"
+  no-head-in-hand: "&cYou need to have a playerhead in your main hand"
   warp-already-exists: "&cThis warp already exists"
   # You can use {warpName}
   warp-set: "&aWarp &6{warpName}&a added"
@@ -33,3 +47,9 @@ messages:
   maximum-amount-warp: "&cYou have already reach the maximum amount of warp"
   # You can use {warpName}
   teleport-to-warp: "&aYou have been teleported to the warp &6{warpName}"
+  item-does-not-exist: "&cThere is no item matching the given id"
+  # You can use {timeLeft} and {warpName} in the entire section
+  teleport:
+    canceled: "&6Canceled"
+    time-left-notification: "&6Teleport in {timeLeft}"
+    notification: "&6Teleported to {warpName}"

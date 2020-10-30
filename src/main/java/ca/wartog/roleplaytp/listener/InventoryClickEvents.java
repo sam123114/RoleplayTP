@@ -1,10 +1,5 @@
 package ca.wartog.roleplaytp.listener;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,7 +8,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import ca.wartog.roleplaytp.Main;
-import ca.wartog.roleplaytp.manager.WarpManager;
+import ca.wartog.roleplaytp.PlayerInteraction;
 
 public class InventoryClickEvents implements Listener{
 	
@@ -30,23 +25,8 @@ public class InventoryClickEvents implements Listener{
 			if(clickedItem == null) return;
 			if(!clickedItem.getItemMeta().hasDisplayName()) return;
 			String itemName = clickedItem.getItemMeta().getDisplayName().substring(2);
-			WarpManager wm = new WarpManager();
-			if(!wm.isWarpSet(itemName)) return;
-			ConfigurationSection section = wm.getWarpInformation(itemName);
 			
-			World world = Bukkit.getWorld((String) section.getString("world"));
-			double x = section.getDouble("x");
-			double y = section.getDouble("y");
-			double z = section.getDouble("z");
-			float pitch = section.getInt("pitch");
-			float yaw = section.getInt("yaw");
-			
-			Location tpLocation = new Location(world, x, y, z, yaw, pitch);
-			
-			p.teleport(tpLocation);
-			p.playSound(p.getLocation(), Sound.ENTITY_SHULKER_TELEPORT, 0.1f, 1);
-			p.sendMessage(main.getConfig().getString("messages.teleport-to-warp").replace("&", "§").replace("{warpName}", itemName));
-			
+			PlayerInteraction.teleportToWarp(p, itemName, null);
 		}
 	}
 }

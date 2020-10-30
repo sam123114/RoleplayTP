@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import ca.wartog.roleplaytp.Main;
 import ca.wartog.roleplaytp.manager.WarpManager;
@@ -27,12 +28,22 @@ public class RoleplayTpCommand implements CommandExecutor{
 					p.sendMessage(main.getConfig().getString("messages.permission").replace("&", "§"));
 					return false;
 				}
-				ItemStack item = main.getItem();
-				if(args.length == 1) {
+				ItemStack item;
+				if(args.length == 2) {
+					if(!itemExists(args[1])) {
+						p.sendMessage(main.getConfig().getString("messages.item-does-not-exist").replace("&", "§"));
+						return false;
+					}
+					item = main.getItem(args[1]);
 					giveItemToPlayer(p, item);
 					p.sendMessage(main.getConfig().getString("messages.item-received").replace("&", "§").replace("{item}", item.getItemMeta().getDisplayName()));
 					return true;
-				} else if(args.length == 2) {
+				} else if(args.length == 3) {
+					if(!itemExists(args[2])) {
+						p.sendMessage(main.getConfig().getString("messages.item-does-not-exist").replace("&", "§"));
+						return false;
+					}
+					item = main.getItem(args[2]);
 					Player target = Bukkit.getPlayer(args[1]);
 					if(target == null){
 						p.sendMessage(main.getConfig().getString("messages.player-not-online").replace("&", "§"));
@@ -69,8 +80,8 @@ public class RoleplayTpCommand implements CommandExecutor{
 				}
 				if(args.length == 2) {
 					ItemStack itemInHand = p.getInventory().getItemInMainHand();
-					if(itemInHand == null || itemInHand.getType().equals(Material.AIR)) {
-						p.sendMessage(main.getConfig().getString("messages.no-item-in-hand").replace("&", "§"));
+					if(itemInHand == null || !itemInHand.getType().equals(Material.PLAYER_HEAD)) {
+						p.sendMessage(main.getConfig().getString("messages.no-head-in-hand").replace("&", "§"));
 						return false;
 					}
 					WarpManager wm = new WarpManager();
@@ -80,6 +91,11 @@ public class RoleplayTpCommand implements CommandExecutor{
 					}
 					if(wm.isWarpSet(args[1])) {
 						p.sendMessage(main.getConfig().getString("messages.warp-already-exists").replace("&", "§"));
+						return false;
+					}
+					SkullMeta sm = (SkullMeta) itemInHand.getItemMeta();
+					if(sm == null || !sm.hasOwner()) {
+						p.sendMessage(main.getConfig().getString("messages.no-head-in-hand").replace("&", "§"));
 						return false;
 					}
 					wm.setWarp(p.getLocation(), args[1], itemInHand);
@@ -125,12 +141,17 @@ public class RoleplayTpCommand implements CommandExecutor{
 		p.getInventory().addItem(item);
 	}
 	
+	private boolean itemExists(String itemId) {
+		if(main.getConfig().isSet("items." + itemId)) return true;
+		else return false;
+	}
+	
 	private void displayMenu(Player p) {
 		p.sendMessage("§8-=-=-=-=-[§aRoleplayTP§8]-=-=-=-=-");
 		p.sendMessage("");
 		p.sendMessage("§e /rptp §f- §7Command list");
 		p.sendMessage("§e /rptp reload §f- §7Reload plugin");
-		p.sendMessage("§e /rptp give [<player>] §f- §7give item to player");
+		p.sendMessage("§e /rptp give [<player>] <itemId> §f- §7give item to player");
 		p.sendMessage("§e /rptp setwarp <name> §f- §7set warp to your location");
 		p.sendMessage("§e /rptp delwarp <name> §f- §7delete a warp");
 		p.sendMessage("");
